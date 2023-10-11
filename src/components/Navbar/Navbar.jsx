@@ -3,7 +3,7 @@ import { CartIcon } from '../../icons';
 
 const Navbar = () => {
   // const { amount } = useSelector((state) => state.cart); // same as below
-  const { amount } = useSelector((store) => store.cart);
+  const { cartAmount } = useSelector((store) => store.cart);
 
   return (
     <nav>
@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className='nav-container'>
           <CartIcon />
           <div className='amount-container'>
-            <p className='total-amount'>{amount}</p>
+            <p className='total-amount'>{cartAmount}</p>
           </div>
         </div>
       </div>

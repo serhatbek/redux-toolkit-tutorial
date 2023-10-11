@@ -3,10 +3,10 @@ import CartItem from '../CartItem/CartItem';
 import { clearCart, resetCart } from '../../features/cart/cartSlice';
 
 const CartContainer = () => {
-  const { cartItems, amount, total } = useSelector((state) => state.cart);
+  const { cartItems, cartAmount, total } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  if (amount < 1) {
+  if (cartAmount < 1) {
     return (
       <section className='cart'>
         <header>
