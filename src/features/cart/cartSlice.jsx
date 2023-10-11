@@ -7,7 +7,7 @@ const initialState = {
   total: 0,
   isLoading: true,
 };
-console.log(initialState.cartAmount);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
