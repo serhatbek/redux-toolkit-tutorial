@@ -3,11 +3,11 @@ import cartItems from '../../cartItems';
 
 const initialState = {
   cartItems: cartItems,
-  cartAmount: 1,
+  cartAmount: 0,
   total: 0,
   isLoading: true,
 };
-
+console.log(initialState.cartAmount);
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -19,9 +19,6 @@ const cartSlice = createSlice({
       const itemId = action.payload;
       state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
     },
-    resetCart: (state) => {
-      state.cartItems = cartItems;
-    },
     increaseCart: (state, { payload }) => {
       const cartItem = state.cartItems.find((item) => item.id === payload.id);
       cartItem.amount = cartItem.amount + 1;
@@ -30,6 +27,16 @@ const cartSlice = createSlice({
       const cartItem = state.cartItems.find((item) => item.id === payload);
       cartItem.amount = cartItem.amount - 1;
     },
+    calculateTotal: (state) => {
+      let amount = 0;
+      let total = 0;
+      state.cartItems.forEach((item) => {
+        amount += item.amount;
+        total += item.amount * item.price;
+      });
+      state.cartAmount = amount;
+      state.total = total;
+    },
   },
 });
 
@@ -37,7 +44,7 @@ export default cartSlice.reducer;
 export const {
   clearCart,
   removeCartItem,
-  resetCart,
   increaseCart,
   decreaseCart,
+  calculateTotal,
 } = cartSlice.actions;
