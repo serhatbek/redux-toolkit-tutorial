@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import cartItems from '../../cartItems';
 import axios from 'axios';
+import { openModal } from '../modal/modalSlice';
 
-const url = 'https://course-api.com/react-useReducer-cart-prodject';
+const url = 'https://course-api.com/react-useReducer-cart-project';
 
 const initialState = {
   // cartItems: cartItems,
@@ -17,11 +18,12 @@ export const getCartItems = createAsyncThunk(
   async (name, thunkAPI) => {
     try {
       // console.log(thunkAPI);
+      // thunkAPI.dispatch(openModal());
       const response = await axios(url);
       return response.data;
     } catch (error) {
       console.log(error.message);
-      console.log(thunkAPI.rejectWithValue(error.message));
+      // console.log(thunkAPI.rejectWithValue(error.message));
     }
   }
 );
@@ -56,21 +58,35 @@ const cartSlice = createSlice({
       state.total = total;
     },
   },
-  extraReducers: {
-    [getCartItems.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [getCartItems.fulfilled]: (state, action) => {
-      // console.log(action);
-      // console.log(action.payload);
-      state.isLoading = false;
-      state.cartItems = action.payload;
-    },
-    [getCartItems.rejected]: (state, action) => {
-      // console.log('fghfg', action);
-      state.isLoading = false;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        // console.log(action);
+        state.isLoading = false;
+      });
   },
+  // extraReducers: {
+  //   [getCartItems.pending]: (state) => {
+  //     state.isLoading = true;
+  //   },
+  //   [getCartItems.fulfilled]: (state, action) => {
+  //     // console.log(action);
+  //     // console.log(action.payload);
+  //     state.isLoading = false;
+  //     state.cartItems = action.payload;
+  //   },
+  //   [getCartItems.rejected]: (state, action) => {
+  //     // console.log('fghfg', action);
+  //     state.isLoading = false;
+  //   },
+  // },
 });
 
 export default cartSlice.reducer;
